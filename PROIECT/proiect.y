@@ -19,6 +19,7 @@ int errorCount = 0;
 
 %token 
 %token<Str> ID TIP
+%token ASSIGN VALUE RETURN
 %start progr
 %%
 progr : declarations main {if (errorCount == 0) cout<< "The program is correct!" << endl;}
@@ -36,7 +37,7 @@ var_decl : TIP ID ';' {}
         | TIP ID ASSIGN VALUE ':'{}
         ;
 
-func_decl : TIP ID '(' param_list')' '{' statement_list '}'
+func_decl : TIP ID '(' param_list ')' '{' func_statement_list '}'
           ;
 
 param_list : param
@@ -58,3 +59,64 @@ class_decl_list : var_decl
 main : 'main' '{' statement_list '}'
   ;
 
+func_statement_list : func_statement ';'
+                | func_statement_list func_statement ';'
+                ;
+
+func_statement : ID ASSIGN expr
+                | RETURN expr
+                | var_decl
+                ;
+
+statement_list : statement ';'
+                | statement_list statement ';'
+                ;
+
+statement : ID ASSIGN expr
+          | RETURN expr
+          | func_call
+          | conditional_statement
+          | loop_statement
+          | object_initialization
+          | object_method_call
+          | print_call
+          ;
+
+expr : expr '+' expr  {$$ = $1 + $3; }
+     | expr '*' expr  {$$ = $1 * $3;}
+     | expr '-' expr  {$$ = $1 - $3;}
+     | expr '/' expr  {$$ = $1 / $3;}
+     | VALUE {$$ = $1;}
+     | ID {}
+     | '(' expr ')' {}
+     | func_call
+     | object_method_call
+     | expr '<' expr {$$ = $1 < $3;}
+     | expr '>' expr {$$ = $1 > $3;}
+     | expr '>=' expr {$$ = $1 >= $3;}
+     | expr '<=' expr {$$ = $1 <= $3;}
+     | expr '==' expr {$$ = $1 == $3;}
+     | expr '!=' expr {$$ = $1 != $3;}
+     ;
+
+func_call : ID '(' arg_list ')'
+          ;
+
+arg_list : expr
+         | arg_list ',' expr
+         ;
+
+conditional_statement : 'if' '(' expr ')' '{' statement_list '}' 
+                      | 'if' '(' expr ')' '{' statement_list '}' 'else' '{' statement_list '}'
+                      ;
+
+loop_statement : 'while' '(' expr ')' '{' statement_list '}'
+               ;
+
+object_initialization : ID ID ';'
+                      ;
+
+object_method_call : ID '.' ID '(' arg_list ')'
+                    ;
+
+print_call : 'print' '(' expr ')'
