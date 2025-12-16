@@ -81,7 +81,8 @@ func_statement_list :
                     ;
 
 func_statement : statement
-               | var_decl 
+               | RETURN expr ';'
+               | var_decl
                ;
 
 statement_list : 
@@ -91,8 +92,7 @@ statement_list :
 statement : ID ASSIGN expr ';' 
           | ID '(' call_args ')' ';' 
           | ID '.' ID '(' call_args ')' ';' 
-          | ID '.' ID ASSIGN expr ';' 
-          | RETURN expr ';' 
+          | ID '.' ID ASSIGN expr ';'  
           | print_call ';' 
           | if_statement 
           | while_statement 
@@ -118,7 +118,7 @@ expr : INT_VAL
      | expr GT expr
      | expr LE expr
      | expr GE expr
-     | expr NOT expr
+     | NOT expr
      | '(' expr ')'
      ;
 
@@ -143,4 +143,12 @@ print_call : PRINT '(' expr ')'
 
 void yyerror(const char * s){
     std::cout << "Eroare de sintaxa la linia " << yylineno << ": " << s << std::endl;
+}
+#include <cstdio>
+
+int main(int argc, char** argv) {
+    if (argc < 2) return 1;
+    yyin = fopen(argv[1], "r");
+    yyparse();
+    return 0;
 }

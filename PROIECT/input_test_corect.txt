@@ -1,0 +1,26 @@
+class Person {
+    int age;
+    string name;
+
+    int getAge() {
+        return age;
+    }
+};
+
+Person p;
+
+int add(int a, int b) {
+    return a + b;
+}
+
+main {
+    p.age = 20;
+    print(p.age);
+    add(3, 4);
+    if (p.age > 18) {
+        print(p.age);
+    }
+    while (p.age < 25) {
+        p.age = p.age + 1;
+    }
+}
