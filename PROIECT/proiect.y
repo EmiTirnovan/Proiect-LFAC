@@ -47,7 +47,7 @@ declarations :
              ;
 
 var_decl : TIP ID ';' 
-         | TIP ID ASSIGN expr ';' 
+         | TIP ID ASSIGN general_expr ';' 
          | ID ID ';' 
          ;
 
@@ -81,7 +81,7 @@ func_statement_list :
                     ;
 
 func_statement : statement
-               | RETURN expr ';'
+               | RETURN general_expr ';'
                | var_decl
                ;
 
@@ -89,54 +89,63 @@ statement_list :
                | statement_list statement
                ;
 
-statement : ID ASSIGN expr ';' 
+statement : ID ASSIGN general_expr ';' 
           | ID '(' call_args ')' ';' 
           | ID '.' ID '(' call_args ')' ';' 
-          | ID '.' ID ASSIGN expr ';'  
+          | ID '.' ID ASSIGN general_expr ';'  
           | print_call ';' 
           | if_statement 
           | while_statement 
           ;
 
-expr : INT_VAL
-     | FLOAT_VAL
-     | STRING_VAL
-     | BOOL_VAL
-     | ID
-     | ID '.' ID 
-     | ID '(' call_args ')' 
-     | ID '.' ID '(' call_args ')' 
-     | expr PLUS expr
-     | expr MINUS expr
-     | expr MUL expr
-     | expr DIV expr
-     | expr AND expr
-     | expr OR expr
-     | expr EQ expr
-     | expr NEQ expr
-     | expr LT expr
-     | expr GT expr
-     | expr LE expr
-     | expr GE expr
-     | NOT expr
-     | '(' expr ')'
-     ;
+general_expr : arith_expr
+             | bool_expr
+             ;
+
+arith_expr : INT_VAL
+           | FLOAT_VAL
+           | STRING_VAL
+           | ID
+           | ID '.' ID 
+           | ID '(' call_args ')' 
+           | ID '.' ID '(' call_args ')' 
+           | arith_expr PLUS arith_expr
+           | arith_expr MINUS arith_expr
+           | arith_expr MUL arith_expr
+           | arith_expr DIV arith_expr
+           | '(' arith_expr ')'
+           ;
+
+bool_expr : BOOL_VAL
+          | arith_expr EQ arith_expr
+          | arith_expr NEQ arith_expr
+          | arith_expr LT arith_expr
+          | arith_expr GT arith_expr
+          | arith_expr LE arith_expr
+          | arith_expr GE arith_expr
+          | bool_expr AND bool_expr
+          | bool_expr OR bool_expr
+          | bool_expr EQ bool_expr
+          | bool_expr NEQ bool_expr
+          | NOT bool_expr
+          | '(' bool_expr ')'
+          ;           
 
 call_args : 
           | args_list
           ;
 
-args_list : expr
-          | args_list ',' expr
+args_list : general_expr
+          | args_list ',' general_expr
           ;
 
-if_statement : IF '(' expr ')' '{' statement_list '}'
+if_statement : IF '(' bool_expr ')' '{' statement_list '}'
              ;
 
-while_statement : WHILE '(' expr ')' '{' statement_list '}'
+while_statement : WHILE '(' bool_expr ')' '{' statement_list '}'
                 ;
 
-print_call : PRINT '(' expr ')'
+print_call : PRINT '(' general_expr ')' 
            ;
 
 %%
