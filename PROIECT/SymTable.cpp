@@ -1,44 +1,55 @@
 #include "SymTable.h"
+#include <fstream>
 
 using namespace std;
 
-bool SymTable::exists(string name){
-    if(ids.find(name)!=ids.end()){
-        return true;
-    }
-    else if(parent!=nullptr){
-        return parent->exists(name);
-    }
-    return false;
-}
-
-void SymTable::addVar(string type,string name){
-    IdInfo newId(&type,&name);
-    ids.insert({name,newId});
-}
-
-int IdInfo::typeTranslation(string type){
-    if(type=="int"){
-        this->type="int";
-        return 0;
-    }
-    else if(type=="float"){
-        this->type="float";
-        return 0;
-    }
-    else if(type=="bool"){
-        this->type="bool";
-        return 0;
-    }
-    else if(type=="string"){
-        this->type="string";
-        return 0;   
-    }
-    else{
-        return -1;
-    }
-}
+SymTable::SymTable(string name, SymTable* parent) : scopeName(name), parent(parent) {}
 
 SymTable::~SymTable(){
-    ids.clear();
+    symbols.clear();
+}
+
+bool SymTable::addSymbol(IdInfo info){
+    if(symbols.count(info.name))
+        return false;
+    symbols[info.name] = info;
+    return true;
+}
+
+IdInfo* SymTable::lookup(string name){
+    if(symbols.count(name))
+        return &symbols[name];
+    if(parent)
+        return parent->lookup(name);
+    return nullptr;
+}
+
+SymTable* SymTable::getParent(){
+    return parent;
+}
+
+string SymTable::getScopeName(){
+    return scopeName;
+}
+
+void SymTable::printTable(){
+    ofstream fout("tables.txt", ios::app);
+    fout << "Scope: " << scopeName << "\n";
+    for(const auto& pair : symbols){
+        fout << "Name: " << pair.second.name << ", Type: " << pair.second.type << ", Kind: ";
+        switch(pair.second.kind){
+            case VARIABLE: fout << "VARIABLE"; break;
+            case FUNCTION: fout << "FUNCTION"; break;
+            case CLASS_NAME: fout << "CLASS_NAME"; break;
+        }
+        if(pair.second.kind == FUNCTION){
+            fout << ", Param Types: ";
+            for(const auto& paramType : pair.second.param_types){
+                fout << paramType << " ";
+            }
+        }
+        fout << ", Value: " << pair.second.value << "\n";
+    }
+    fout << "--------------------------\n";
+    fout.close();
 }

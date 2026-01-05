@@ -7,7 +7,7 @@ class Person {
     }
 };
 
-int add(int a, int b) {
+int add(int a, int b,int a, string b) {
     return a + b;
 }
 
@@ -15,14 +15,13 @@ float y = 15;
 bool wow=true;
 
 main {
-    Person p;
     p.age = 20;
     print(p.age);
-    add(douazezisisapte, paisprezece);
+    add(p.age, p.age);
     if (p.age > 18) {
         print(p.age);
     }
-    if (wow)
+    if (wow == true)
     {
         wow=false;
     }

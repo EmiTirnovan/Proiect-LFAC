@@ -1,24 +1,35 @@
+#pragma once
+#include <iostream>
 #include <map>
 #include <string>
+#include <vector>
+#include <fstream>
 
 using namespace std;
 
-class IdInfo{
-    int typeTranslation(string type);
-    public:
-    string type;
-    string name;
+enum IdKind { VARIABLE, FUNCTION, CLASS_NAME };
 
-    IdInfo(string* type,string* name):type(*type),name(*name){if (typeTranslation(*type)!=0) /*eroare la compilare nu exista type mentionat*/;}
+class IdInfo{
+public:
+    string name;
+    string type;
+    string value;
+    IdKind kind;
+    vector<string> param_types;
+    IdInfo(){}
+    IdInfo(string name,string type,IdKind kind = VARIABLE , string value=""):name(name),type(type),kind(kind),value(value){}
 };
 
 class SymTable{
     SymTable* parent;
-    map<string,IdInfo> ids;
-    string name;
-    public:
-    SymTable(string name,SymTable* parent=nullptr):name(name),parent(parent){}
-    bool exists(string name);
-    void addVar(string type,string name);
+    map<string,IdInfo> symbols;
+    string scopeName;
+public:
+    SymTable (string name,SymTable* parent = nullptr);
     ~SymTable();
+    bool addSymbol(IdInfo info);
+    IdInfo* lookup(string name);
+    SymTable* getParent();
+    string getScopeName();
+    void printTable();
 };

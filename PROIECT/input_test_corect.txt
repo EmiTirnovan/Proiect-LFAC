@@ -15,7 +15,7 @@ int add(int a, int b) {
 
 main {
     p.age = 20;
-    print(p.age);
+    print(p);
     add(3, 4);
     if (p.age > 18) {
         print(p.age);
