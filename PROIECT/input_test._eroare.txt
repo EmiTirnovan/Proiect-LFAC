@@ -1,0 +1,32 @@
+class Person {
+    int age;
+    string name;
+
+    int getAge() {
+        return age;
+    }
+};
+
+int add(int a, int b) {
+    return a + b;
+}
+
+float y = 15;
+bool wow=true;
+
+main {
+    Person p;
+    p.age = 20;
+    print(p.age);
+    add(douazezisisapte, paisprezece);
+    if (p.age > 18) {
+        print(p.age);
+    }
+    if (wow)
+    {
+        wow=false;
+    }
+    while (p.age < 25) {
+        p.age = p.age + 1;
+    }
+}

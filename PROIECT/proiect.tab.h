@@ -47,8 +47,10 @@ extern int yydebug;
 /* "%code requires" blocks.  */
 #line 1 "proiect.y"
 
+    #include <vector>
+    #include "AST.h"
 
-#line 52 "proiect.tab.h"
+#line 54 "proiect.tab.h"
 
 /* Token kinds.  */
 #ifndef YYTOKENTYPE
@@ -93,13 +95,15 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 19 "proiect.y"
+#line 43 "proiect.y"
 
      char* strVal;
      int intVal;
      float floatVal;
+     ASTNode* node;
+     std::vector<ASTNode*>* nodeList;
 
-#line 103 "proiect.tab.h"
+#line 107 "proiect.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

@@ -1,16 +1,7 @@
-Scope: Function getAge
---------------------------
-Scope: Class Person
-Name: age, Type: int, Kind: VARIABLE, Value: 
-Name: getAge, Type: int, Kind: FUNCTION, Param Types: , Value: 
-Name: name, Type: string, Kind: VARIABLE, Value: 
---------------------------
-Scope: Function add
-Name: a, Type: int, Kind: VARIABLE, Value: param
-Name: b, Type: int, Kind: VARIABLE, Value: param
---------------------------
 Scope: global
-Name: Person, Type: class, Kind: CLASS_NAME, Value: 
-Name: add, Type: int, Kind: FUNCTION, Param Types: int int , Value: 
-Name: p, Type: Person, Kind: VARIABLE, Value: object
+Name: Person, Kind: 2
+Name: add, Kind: 1
+Name: p, Kind: 0 Val: <unknown>
+Runtime Values Dump:
+  p.age = 25
 --------------------------

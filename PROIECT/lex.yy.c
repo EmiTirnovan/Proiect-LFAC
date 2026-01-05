@@ -366,20 +366,20 @@ struct yy_trans_info
 static const flex_int16_t yy_accept[82] =
     {   0,
         0,    0,   31,   29,   27,   28,   21,   29,   29,   24,
-       22,   23,   25,   10,   17,   26,   18,    9,    9,    9,
-        9,    9,    9,    9,    9,    9,    9,    9,   29,   27,
-       14,    0,   12,   19,    0,   10,   15,   13,   16,    9,
-        9,    9,    9,    9,    5,    9,    9,    9,    9,    9,
-        9,    9,   20,   11,    9,    9,    9,    9,    1,    9,
-        9,    9,    9,    9,    9,    9,    9,    9,    3,    9,
-        9,    9,    8,    9,    2,    7,    9,    9,    6,    4,
+       22,   23,   25,   11,   19,   26,   20,   12,   12,   12,
+       12,   12,   12,   12,   12,   12,   12,   12,   29,   27,
+       14,    0,    9,   17,    0,   11,   15,   13,   16,   12,
+       12,   12,   12,   12,    5,   12,   12,   12,   12,   12,
+       12,   12,   18,   10,   12,   12,   12,   12,    1,   12,
+       12,   12,   12,   12,   12,   12,   12,   12,    3,   12,
+       12,   12,    8,   12,    2,    7,   12,   12,    6,    4,
         0
     } ;
 
 static const YY_CHAR yy_ec[256] =
     {   0,
         1,    1,    1,    1,    1,    1,    1,    1,    2,    3,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+        1,    1,    2,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    2,    4,    5,    1,    1,    1,    6,    1,    1,
         1,    7,    8,    1,    9,   10,   11,   12,   12,   12,
@@ -717,9 +717,10 @@ YY_DECL
 		}
 
 	{
-#line 8 "proiect.l"
+#line 9 "proiect.l"
 
-#line 723 "lex.yy.c"
+
+#line 724 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -778,175 +779,157 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 9 "proiect.l"
-{
-    yylval.strVal = strdup(yytext);
-    return TIP;
-}
+#line 11 "proiect.l"
+{ yylval.strVal = strdup(yytext); return TIP; }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 14 "proiect.l"
+#line 12 "proiect.l"
 { return CLASS; }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 15 "proiect.l"
+#line 13 "proiect.l"
 { return MAIN; }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 16 "proiect.l"
+#line 14 "proiect.l"
 { return RETURN; }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 17 "proiect.l"
+#line 15 "proiect.l"
 { return IF; }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 18 "proiect.l"
+#line 16 "proiect.l"
 { return WHILE; }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 19 "proiect.l"
+#line 17 "proiect.l"
 { return PRINT; }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 21 "proiect.l"
-{
-    yylval.strVal = strdup(yytext);
-    return BOOL_VAL;
-}
+#line 19 "proiect.l"
+{ yylval.strVal = strdup(yytext); return BOOL_VAL; }
 	YY_BREAK
 case 9:
+/* rule 9 can match eol */
 YY_RULE_SETUP
-#line 26 "proiect.l"
-{
-    yylval.strVal = strdup(yytext);
-    return ID;
-}
+#line 20 "proiect.l"
+{ yylval.strVal = strdup(yytext); return STRING_VAL; }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 31 "proiect.l"
-{
-    yylval.intVal = atoi(yytext);
-    return INT_VAL;
-}
+#line 22 "proiect.l"
+{ yylval.floatVal = (float)atof(yytext); return FLOAT_VAL; }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 36 "proiect.l"
-{
-    yylval.floatVal = atof(yytext);
-    return FLOAT_VAL;
-}
+#line 23 "proiect.l"
+{ yylval.intVal = atoi(yytext); return INT_VAL; }
 	YY_BREAK
 case 12:
-/* rule 12 can match eol */
 YY_RULE_SETUP
-#line 41 "proiect.l"
-{
-    yylval.strVal = strdup(yytext);
-    return STRING_VAL;
-}
+#line 24 "proiect.l"
+{ yylval.strVal = strdup(yytext); return ID; }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 46 "proiect.l"
+#line 26 "proiect.l"
 { return EQ; }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 47 "proiect.l"
+#line 27 "proiect.l"
 { return NEQ; }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 48 "proiect.l"
+#line 28 "proiect.l"
 { return LE; }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 49 "proiect.l"
+#line 29 "proiect.l"
 { return GE; }
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 50 "proiect.l"
-{ return LT; }
+#line 30 "proiect.l"
+{ return AND; }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 51 "proiect.l"
-{ return GT; }
+#line 31 "proiect.l"
+{ return OR; }
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 52 "proiect.l"
-{ return AND; }
+#line 32 "proiect.l"
+{ return LT; }
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 53 "proiect.l"
-{ return OR; }
+#line 33 "proiect.l"
+{ return GT; }
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 54 "proiect.l"
+#line 34 "proiect.l"
 { return NOT; }
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 55 "proiect.l"
+#line 35 "proiect.l"
 { return PLUS; }
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 56 "proiect.l"
+#line 36 "proiect.l"
 { return MINUS; }
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 57 "proiect.l"
+#line 37 "proiect.l"
 { return MUL; }
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 58 "proiect.l"
+#line 38 "proiect.l"
 { return DIV; }
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 59 "proiect.l"
+#line 39 "proiect.l"
 { return ASSIGN; }
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 60 "proiect.l"
+#line 41 "proiect.l"
 ;
 	YY_BREAK
 case 28:
 /* rule 28 can match eol */
 YY_RULE_SETUP
-#line 61 "proiect.l"
+#line 42 "proiect.l"
 { yylineno++; }
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 62 "proiect.l"
+#line 43 "proiect.l"
 { return yytext[0]; }
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 64 "proiect.l"
+#line 45 "proiect.l"
 ECHO;
 	YY_BREAK
-#line 950 "lex.yy.c"
+#line 933 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1951,6 +1934,5 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 64 "proiect.l"
-
+#line 45 "proiect.l"
 

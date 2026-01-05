@@ -1,10 +1,14 @@
 #!/bin/bash
+echo "Curatare..."
+rm -f proiect lex.yy.c proiect.tab.c proiect.tab.h
 
-echo "compiling $1"
-rm -f lex.yy.c
-rm -f $1.tab.c
-rm -f $1
-bison -d $1.y
-lex $1.l
-g++ lex.yy.c $1.tab.c SymTable.cpp -o $1
+echo "Generare parser (Bison)..."
+bison -d proiect.y
 
+echo "Generare lexer (Flex)..."
+flex proiect.l
+
+echo "Compilare (G++)..."
+g++ lex.yy.c proiect.tab.c SymTable.cpp AST.cpp -o proiect -std=c++17
+
+echo "Gata! Ruleaza: ./proiect input_test_corect.txt"
