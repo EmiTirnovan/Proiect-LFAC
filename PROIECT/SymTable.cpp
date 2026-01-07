@@ -44,13 +44,11 @@ void SymTable::printTable() {
     for (const auto& pair : symbols) {
         fout << "Name: " << pair.second.name << ", Kind: " << pair.second.kind;
         if (pair.second.kind == VARIABLE) {
-             // Afisam si valorile simple
              if (runtimeValues.count(pair.second.name))
                  fout << " Val: " << runtimeValues[pair.second.name].toString();
         }
         fout << "\n";
     }
-    // Debug: afisam si valorile runtime "orfane" (campuri de obiecte)
     fout << "Runtime Values Dump:\n";
     for(auto& rv : runtimeValues) {
         if (rv.first.find('.') != string::npos) {
@@ -79,34 +77,25 @@ ValueType SymTable::getValueType(const string& name, bool* ok) {
     return stringToType(info->type);
 }
 
-// MODIFICAT: Suport pentru campuri (dot notation)
 Value SymTable::getValue(const string& name, bool* ok) {
-    // 1. Cautam valoarea exacta in ierarhia de scope-uri
     for (SymTable* s = this; s != nullptr; s = s->parent) {
         if (s->runtimeValues.count(name)) {
             if (ok) *ok = true;
             return s->runtimeValues[name];
         }
     }
-    
-    // 2. Daca e camp (contine .), verificam daca obiectul de baza exista
     size_t dotPos = name.find('.');
     if (dotPos != string::npos) {
         string baseName = name.substr(0, dotPos);
         for (SymTable* s = this; s != nullptr; s = s->parent) {
-            // Daca gasim obiectul "p" declarat in acest scope
             if (s->symbols.count(baseName)) {
-                // Returnam default (lazy init pentru campuri)
                 if (ok) *ok = true;
-                return Value(); // Sau Value::defaultFor(...) daca am sti tipul
+                return Value();
             }
         }
     }
-
-    // 3. Fallback standard
     for (SymTable* s = this; s != nullptr; s = s->parent) {
         if (s->symbols.count(name)) {
-            // Exista simbolul, dar nu are runtime value (poate neinitializat explicit)
             IdInfo& info = s->symbols[name];
             Value def = Value::defaultFor(stringToType(info.type));
             s->runtimeValues[name] = def;
@@ -119,23 +108,18 @@ Value SymTable::getValue(const string& name, bool* ok) {
     return Value();
 }
 
-// MODIFICAT: Suport pentru campuri
 bool SymTable::setValue(const string& name, const Value& v) {
-    // 1. Daca e camp (contine .)
     size_t dotPos = name.find('.');
     if (dotPos != string::npos) {
         string baseName = name.substr(0, dotPos);
-        // Cautam unde este declarat obiectul "p" si salvam valoarea "p.age" in acel scope
         for (SymTable* s = this; s != nullptr; s = s->parent) {
             if (s->symbols.count(baseName)) {
                 s->runtimeValues[name] = v;
                 return true;
             }
         }
-        return false; // Obiectul de baza nu exista
+        return false;
     }
-
-    // 2. Logic standard
     for (SymTable* s = this; s != nullptr; s = s->parent) {
         if (s->symbols.count(name)) {
             s->runtimeValues[name] = v;

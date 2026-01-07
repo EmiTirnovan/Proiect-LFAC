@@ -22,18 +22,11 @@ int errorCount = 0;
 SymTable* currentScope = nullptr;
 std::vector<std::pair<std::string, std::string>> currentParamTypes;
 
-// --- Helper pentru transformarea vectorului de statement-uri in arbore ---
 ASTNode* createSequence(std::vector<ASTNode*>* stmts) {
     if (!stmts || stmts->empty()) return nullptr;
-    
-    // Construim un arbore dreapta-recursiv: SEQ(stmt1, SEQ(stmt2, ...))
-    // Luam ultimul element
     ASTNode* root = stmts->back();
-    
-    // Iteram invers de la penultimul la inceput
     for (int i = stmts->size() - 2; i >= 0; --i) {
         ASTNode* current = (*stmts)[i];
-        // Cream un nod SEQ: stanga e instructiunea curenta, dreapta e restul secventei
         root = new ASTNode("SEQ", ValueType::VOID, current, root);
     }
     return root;
@@ -91,33 +84,56 @@ declarations : | declarations var_decl | declarations func_decl | declarations c
 var_decl : TIP ID ';'
          {
           if (!currentScope->addSymbol(IdInfo($2,$1,VARIABLE,"")))
-               yyerror("Variabila deja declarata!");
+          {
+               std::string msg = "Variabila '" + std::string($2) + "' a fost deja declarata in acest scope.";
+               yyerror(msg.c_str());
+          }
          }
          | TIP ID ASSIGN general_expr ';'
          {
           if (!currentScope->addSymbol(IdInfo($2,$1,VARIABLE,"initializata")))
-               yyerror("Variabila deja declarata!");
-          if ($4 && $4->exprType != stringToType($1)) yyerror("Tip incorect init");
-          if($4) delete $4; // Aici e ok sa stergem init-ul static din declaratii, AST-ul executabil e in main
+               {
+                    std::string msg = "Variabila '" + std::string($2) + "' a fost deja declarata in acest scope.";
+                    yyerror(msg.c_str());
+               }
+          if ($4 && $4->exprType != stringToType($1))
+          {
+               std::string msg = "Tip incompatibil la initializarea variabilei '" + std::string($2) + 
+                                 "': s-a asteptat '" + std::string($1) + "', dar s-a primit '" + 
+                                 typeToString($4->exprType) + "'.";
+               yyerror(msg.c_str());
+          }
+          if($4) delete $4;
          }
          | ID ID ';'
          {
           IdInfo* cls = currentScope->lookup($1);
-          if(!cls || cls->kind != CLASS_NAME) yyerror("Clasa nedefinita");
+          if(!cls || cls->kind != CLASS_NAME)
+          {
+               std::string msg = "Tipul '" + std::string($1) + "' nu este definit ca o clasa.";
+               yyerror(msg.c_str());
+          }
           if (!currentScope->addSymbol(IdInfo($2,$1,VARIABLE,"object")))
-               yyerror("Obiect deja declarat!");
+               {
+                    std::string msg = "Obiectul '" + std::string($2) + "' a fost deja declarat.";
+                    yyerror(msg.c_str());
+               }
          }
          ;
 
 class_decl : CLASS ID
            {
                if(!currentScope->addSymbol(IdInfo($2, "class", CLASS_NAME, "")))
-                    yyerror("Clasa deja existenta!");
+                    {
+                         std::string msg = "Clasa '" + std::string($2) + "' este deja definita.";
+                         yyerror(msg.c_str());
+                    }
                currentScope = new SymTable("Class "+std::string($2), currentScope);
            }
            '{' class_member_list '}' ';'
            {
                SymTable* clsScope = currentScope; 
+               currentScope->printTable();
                currentScope = currentScope->getParent(); 
                IdInfo* clsInfo = currentScope->lookup($2);
                if(clsInfo) { clsInfo->defScope = clsScope; currentScope->updateSymbol(*clsInfo); }
@@ -130,15 +146,22 @@ func_decl : TIP ID { currentParamTypes.clear(); } '(' param_list ')'
           {
                IdInfo func($2, $1, FUNCTION, "");
                for(auto& p : currentParamTypes) func.param_types.push_back(p.first);
-               if (!currentScope->addSymbol(func)) yyerror("Functia deja declarata!");
+               if (!currentScope->addSymbol(func)) {
+                    std::string msg = "Functia '" + std::string($2) + "' este deja definita in acest scope.";
+                    yyerror(msg.c_str());
+               }
                currentScope = new SymTable("Function "+std::string($2), currentScope);
                for (auto& p : currentParamTypes)
                     if (!currentScope->addSymbol(IdInfo(p.second, p.first, VARIABLE, "param")))
-                         yyerror("Parametru deja declarat!");
+                         {
+                              std::string msg = "Parametrul '" + p.second + "' este deja definit in functia '" + std::string($2) + "'.";
+                              yyerror(msg.c_str());
+                         }
           }
           '{' func_body '}'
           {
                SymTable* fnScope = currentScope;
+               currentScope->printTable();
                currentScope = currentScope->getParent(); 
                IdInfo* funcInfo = currentScope->lookup($2);
                if(funcInfo) { funcInfo->defScope = fnScope; currentScope->updateSymbol(*funcInfo); }
@@ -162,9 +185,13 @@ main : MAIN '{' statement_list '}'
      ;
 
 func_body : func_statement_list { if($1) { for(auto n:*$1) if(n) delete n; delete $1; } } ;
+
 func_statement_list : { $$ = new std::vector<ASTNode*>(); } 
                     | func_statement_list func_statement { $$ = $1; if($2) $$->push_back($2); } ;
-func_statement : statement { $$ = $1; } | RETURN general_expr ';' { $$ = $2; } | var_decl { $$ = nullptr; } ;
+
+func_statement : statement { $$ = $1; } 
+               | RETURN general_expr ';' { $$ = $2; } 
+               | var_decl { $$ = nullptr; } ;
 
 statement_list : { $$ = new std::vector<ASTNode*>(); } 
                | statement_list statement { $$ = $1; if($2) $$->push_back($2); } ;
@@ -172,7 +199,8 @@ statement_list : { $$ = new std::vector<ASTNode*>(); }
 statement : ID ASSIGN general_expr ';'
           {
                IdInfo* info = currentScope->lookup($1);
-               if(!info){ yyerror("Var nedeclarata"); if($3) delete $3; $$=nullptr; }
+               if(!info){ std::string msg = "Variabila '" + std::string($1) + "' nu a fost declarata.";
+                    yyerror(msg.c_str()); if($3) delete $3; $$=nullptr; }
                else {
                     std::string err;
                     $$ = ASTNode::makeAssign(ASTNode::id($1, stringToType(info->type)), $3, yylineno, err);
@@ -182,14 +210,25 @@ statement : ID ASSIGN general_expr ';'
           | ID '(' call_args ')' ';'
           {
                IdInfo* f = currentScope->lookup($1);
-               if(!f || f->kind!=FUNCTION) yyerror("Functie invalida");
-               else if($3->size() != f->param_types.size()) yyerror("Nr param incorect");
+               if(!f || f->kind!=FUNCTION) {
+                    std::string msg = "Functia '" + std::string($1) + "' nu este declarata.";
+                    yyerror(msg.c_str());
+               }
+               else if($3->size() != f->param_types.size()) {
+                    std::string msg = "Functia '" + std::string($1) + "' asteapta " + std::to_string(f->param_types.size()) + 
+                                      " parametri, dar i s-au dat " + std::to_string($3->size()) + ".";
+                    yyerror(msg.c_str());
+               }
                else {
                    for(size_t i=0; i<$3->size(); ++i) 
-                       if((*$3)[i]->exprType != stringToType(f->param_types[i])) yyerror("Tip param incorect");
+                       if((*$3)[i]->exprType != stringToType(f->param_types[i])){
+                               std::string msg = "Tip incompatibil la apelul functiei '" + std::string($1) + 
+                                              "' pentru parametrul " + std::to_string(i+1) + 
+                                              ": s-a asteptat '" + f->param_types[i] + "', dar s-a primit '" + 
+                                              typeToString((*$3)[i]->exprType) + "'.";
+                               yyerror(msg.c_str());
+                       }
                }
-               // Aici, daca am vrea apeluri de functii void, ar trebui facut nod Call.
-               // Deocamdata doar curatam memoria pentru ca nu ai implementat Call statement in AST.
                for(auto n:*$3) delete n; delete $3; $$=nullptr; 
           }
           | ID '.' ID ASSIGN general_expr ';'
@@ -197,34 +236,43 @@ statement : ID ASSIGN general_expr ';'
                 IdInfo* o = currentScope->lookup($1);
                 std::string fieldType = "unknown";
 
-                if(!o || o->kind!=VARIABLE) yyerror("Nu e obiect");
+                if(!o || o->kind!=VARIABLE) {
+                    std::string msg = "Obiectul '" + std::string($1) + "' nu este declarat sau nu este un obiect.";
+                    yyerror(msg.c_str());
+                }
                 else {
                      IdInfo* c = currentScope->lookup(o->type);
-                     if(!c || !c->defScope) yyerror("Clasa invalida");
+                     if(!c || !c->defScope) {
+                         std::string msg = "Clasa obiectului '" + std::string($1) + "' nu este definita.";
+                         yyerror(msg.c_str());
+                     }
                      else {
                          IdInfo* f = c->defScope->lookup($3);
-                         if(!f) yyerror("Camp inexistent");
+                         if(!f) {
+                               std::string msg = "Campul '" + std::string($3) + "' nu exista in clasa '" + o->type + "'.";
+                               yyerror(msg.c_str());
+                         }
                          else {
-                            if($5->exprType != stringToType(f->type)) yyerror("Tip incompatibil");
+                            if($5->exprType != stringToType(f->type)) {
+                                   std::string msg = "Tip incompatibil la atribuirea campului '" + std::string($3) + 
+                                                       "' al obiectului '" + std::string($1) + "': s-a asteptat '" + f->type + 
+                                                       "', dar s-a primit '" + typeToString($5->exprType) + "'.";
+                                   yyerror(msg.c_str());
+                            }
                             fieldType = f->type;
                          }
                      }
                 }
-                
-                // MODIFICARE: Construim nodul, NU returnam nullptr
                 std::string err;
                 ASTNode* objectNode = ASTNode::id($1, stringToType(o ? o->type : "unknown"));
                 ASTNode* fieldNode = ASTNode::id($3, stringToType(fieldType));
-                // Folosim operatorul "." pentru acces membru
                 ASTNode* memberAccess = new ASTNode(".", stringToType(fieldType), objectNode, fieldNode);
-                
                 $$ = ASTNode::makeAssign(memberAccess, $5, yylineno, err);
-                
                 if(!err.empty()) { yyerror(err.c_str()); delete $$; $$=nullptr; }
           }
           | print_call ';' { $$ = $1; }
-          | if_statement { $$ = $1; } // MODIFICARE: Propagam nodul If
-          | while_statement { $$ = $1; } // MODIFICARE: Propagam nodul While
+          | if_statement { $$ = $1; }
+          | while_statement { $$ = $1; }
           ;
 
 general_expr : arith_expr { $$ = $1; } | bool_expr { $$ = $1; } ;
@@ -235,7 +283,10 @@ arith_expr : INT_VAL { $$ = ASTNode::literal(Value::fromInt($1)); }
            | ID {
                 IdInfo* i = currentScope->lookup($1);
                 $$ = i ? ASTNode::id($1, stringToType(i->type)) : ASTNode::other(ValueType::UNKNOWN);
-                if(!i) yyerror("Var nedeclarata");
+                if(!i) {
+                    std::string msg = "Variabila '" + std::string($1) + "' nu a fost declarata.";
+                    yyerror(msg.c_str());
+                }
            }
            | ID '.' ID {
                 IdInfo* o = currentScope->lookup($1);
@@ -244,10 +295,18 @@ arith_expr : INT_VAL { $$ = ASTNode::literal(Value::fromInt($1)); }
                      IdInfo* c = currentScope->lookup(o->type);
                      if(c && c->defScope) {
                          IdInfo* f = c->defScope->lookup($3);
-                         if(f) t = stringToType(f->type); else yyerror("Camp lipsa");
-                     } else yyerror("Clasa lipsa");
-                } else yyerror("Nu e obiect");
-                // Aici construim un nod de acces membru pentru read
+                         if(f) t = stringToType(f->type); else {
+                               std::string msg = "Campul '" + std::string($3) + "' nu exista in clasa '" + o->type + "'.";
+                               yyerror(msg.c_str());
+                         }
+                     } else {
+                         std::string msg = "Clasa obiectului '" + std::string($1) + "' nu este definita.";
+                         yyerror(msg.c_str());
+                     }
+                } else {
+                         std::string msg = "Obiectul '" + std::string($1) + "' nu este declarat sau nu este un obiect.";
+                         yyerror(msg.c_str());
+                }
                 ASTNode* obj = ASTNode::id($1, stringToType(o ? o->type : "unknown"));
                 ASTNode* field = ASTNode::id($3, t);
                 $$ = new ASTNode(".", t, obj, field);
@@ -257,8 +316,14 @@ arith_expr : INT_VAL { $$ = ASTNode::literal(Value::fromInt($1)); }
                 ValueType t = ValueType::UNKNOWN;
                 if(f && f->kind==FUNCTION) {
                     t = stringToType(f->type);
-                    if($3->size() != f->param_types.size()) yyerror("Nr param gresit");
-                } else yyerror("Functie lipsa");
+                    if($3->size() != f->param_types.size()) {
+                         std::string msg = "Apel invalid functie '" + std::string($1) + "': numar parametri gresit.";
+                         yyerror(msg.c_str());
+                    }
+                } else {
+                         std::string msg = "Functia '" + std::string($1) + "' nu este declarata.";
+                         yyerror(msg.c_str());
+                }
                 for(auto n:*$3) delete n; delete $3; $$=ASTNode::other(t);
            }
            | arith_expr PLUS arith_expr { std::string e; $$=ASTNode::makeBinary("+",$1,$3,yylineno,e); if(e.size()) yyerror(e.c_str()); }
@@ -272,6 +337,12 @@ bool_expr : BOOL_VAL { $$ = ASTNode::literal(Value::fromBool(std::string($1)=="t
           | arith_expr EQ arith_expr { std::string e; $$=ASTNode::makeCompare("==",$1,$3,yylineno,e); if(e.size()) yyerror(e.c_str()); }
           | arith_expr LT arith_expr { std::string e; $$=ASTNode::makeCompare("<",$1,$3,yylineno,e); if(e.size()) yyerror(e.c_str()); }
           | arith_expr GT arith_expr { std::string e; $$=ASTNode::makeCompare(">",$1,$3,yylineno,e); if(e.size()) yyerror(e.c_str()); }
+          | arith_expr LE arith_expr { std::string e; $$=ASTNode::makeCompare("<=",$1,$3,yylineno,e); if(e.size()) yyerror(e.c_str()); }
+          | arith_expr GE arith_expr { std::string e; $$=ASTNode::makeCompare(">=",$1,$3,yylineno,e); if(e.size()) yyerror(e.c_str()); }
+          | arith_expr NEQ arith_expr { std::string e; $$=ASTNode::makeCompare("!=",$1,$3,yylineno,e); if(e.size()) yyerror(e.c_str()); }
+          | bool_expr AND bool_expr { std::string e; $$=ASTNode::makeBinary("AND",$1,$3,yylineno,e); if(e.size()) yyerror(e.c_str()); }
+          | bool_expr OR bool_expr { std::string e; $$=ASTNode::makeBinary("OR",$1,$3,yylineno,e); if(e.size()) yyerror(e.c_str()); }
+          | NOT bool_expr { std::string e; $$=ASTNode::makeUnary("NOT",$2,yylineno,e); if(e.size()) yyerror(e.c_str()); }
           | '(' bool_expr ')' { $$ = $2; }
           ;
 
@@ -281,16 +352,14 @@ args_list : general_expr { $$ = new std::vector<ASTNode*>(); $$->push_back($1); 
 
 if_statement : IF '(' bool_expr ')' '{' statement_list '}' 
              { 
-                // MODIFICARE: Construim nodul IF in loc sa stergem
                 ASTNode* block = createSequence($6);
-                delete $6; // Stergem vectorul, dar pastram nodurile in 'block'
+                delete $6;
                 $$ = new ASTNode("If", ValueType::VOID, $3, block);
              } 
              ;
 
 while_statement : WHILE '(' bool_expr ')' '{' statement_list '}'
                 { 
-                // MODIFICARE: Construim nodul WHILE in loc sa stergem
                 ASTNode* block = createSequence($6);
                 delete $6;
                 $$ = new ASTNode("While", ValueType::VOID, $3, block);
@@ -304,6 +373,9 @@ void yyerror(const char * s){ std::cout << "Eroare la linia " << yylineno << ": 
 int main(int argc, char** argv) {
     if (argc < 2) return 1;
     yyin = fopen(argv[1], "r");
-    yyparse();
+    int result = yyparse();
+    if (result != 0) {
+        currentScope->printTable();
+    }
     return (errorCount == 0 ? 0 : 1);
 }

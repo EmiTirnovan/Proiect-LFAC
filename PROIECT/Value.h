@@ -55,7 +55,7 @@ public:
             case ValueType::VOID: {
                 Value x; x.type = ValueType::VOID; x.data = 0; return x;
             }
-            default: return Value(); // Returneaza un unknown safe
+            default: return Value();
         }
     }
 

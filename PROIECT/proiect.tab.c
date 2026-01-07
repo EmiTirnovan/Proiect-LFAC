@@ -311,7 +311,7 @@ typedef int yytype_uint16;
 
 
 /* Stored state numbers (used for stacks). */
-typedef yytype_int8 yy_state_t;
+typedef yytype_uint8 yy_state_t;
 
 /* State numbers in computations.  */
 typedef int yy_state_fast_t;
@@ -522,16 +522,16 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  3
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   140
+#define YYLAST   167
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  36
 /* YYNNTS -- Number of nonterminals.  */
 #define YYNNTS  27
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  62
+#define YYNRULES  68
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  128
+#define YYNSTATES  140
 
 /* YYMAXUTOK -- Last valid token kind.  */
 #define YYMAXUTOK   283
@@ -583,13 +583,13 @@ static const yytype_int8 yytranslate[] =
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int16 yyrline[] =
 {
-       0,    73,    73,    73,    89,    89,    89,    89,    91,    96,
-     103,   113,   112,   127,   127,   127,   129,   130,   129,   148,
-     148,   148,   149,   151,   164,   165,   166,   167,   167,   167,
-     169,   170,   172,   182,   195,   225,   226,   227,   230,   230,
-     232,   233,   234,   235,   240,   255,   264,   265,   266,   267,
-     268,   271,   272,   273,   274,   275,   278,   278,   279,   280,
-     282,   291,   300
+       0,    73,    73,    73,    89,    89,    89,    89,    91,    99,
+     115,   132,   131,   150,   150,   150,   152,   153,   152,   178,
+     178,   178,   179,   181,   194,   196,   197,   199,   200,   201,
+     203,   204,   206,   217,   243,   287,   288,   289,   292,   292,
+     294,   295,   296,   297,   305,   329,   344,   345,   346,   347,
+     348,   351,   352,   353,   354,   355,   356,   357,   358,   359,
+     360,   361,   364,   364,   365,   366,   368,   377,   386
 };
 #endif
 
@@ -624,7 +624,7 @@ yysymbol_name (yysymbol_kind_t yysymbol)
 }
 #endif
 
-#define YYPACT_NINF (-58)
+#define YYPACT_NINF (-66)
 
 #define yypact_value_is_default(Yyn) \
   ((Yyn) == YYPACT_NINF)
@@ -638,19 +638,20 @@ yysymbol_name (yysymbol_kind_t yysymbol)
    STATE-NUM.  */
 static const yytype_int16 yypact[] =
 {
-     -58,     6,   -58,   -58,    58,     1,    19,    32,    27,   -58,
-     -58,   -58,   -58,   -15,    21,   -58,   -58,   -58,     4,   -58,
-      38,    34,    40,   -16,   -58,   -58,   -58,   -58,     4,    22,
-      97,   -58,    78,   -58,    54,    66,    70,    71,   -58,   -58,
-     -58,   -58,    65,     4,   101,    62,    72,   -58,    10,    10,
-      10,    10,    10,    10,    10,   103,    11,   -58,    17,     4,
-       4,   109,     4,     4,     4,   -58,   -58,    84,    85,   -58,
-     -58,   -58,    10,    14,    14,   -58,   -58,    56,    56,    56,
-     -58,   -58,    78,    89,   -58,   -58,    92,    91,   116,    97,
-      93,    94,    95,   -58,     4,    74,    99,   -58,   -58,   -58,
-     102,     4,   100,   104,   -58,   -58,   -58,   -58,   106,   -58,
-     -58,   105,    96,   -58,    46,    53,   -58,    -1,   129,     4,
-     -58,   -58,   -58,   -58,   -58,    21,   108,   -58
+     -66,     2,   -66,   -66,   118,    11,    13,    18,    -5,   -66,
+     -66,   -66,   -66,    15,    56,   -66,   -66,   -66,    55,   -66,
+      35,    42,    10,   -20,   -66,   -66,   -66,   -66,    55,    55,
+      54,   116,   -11,    82,   -66,    41,    62,    64,    65,   -66,
+     -66,   -66,   -66,    69,    55,   101,   116,   -66,    84,   -13,
+     -66,    61,    61,    61,    61,    61,    61,    61,    61,    61,
+      61,    55,    55,   102,   -15,   -66,    53,    55,    55,   113,
+      55,    55,    55,   -66,   -66,    87,    96,   -66,   -66,   -66,
+      61,    60,    60,   -66,   -66,   107,   107,   107,   107,   107,
+     107,   -66,   129,   -66,   -66,    82,   109,   -66,   -66,   121,
+     119,   142,    94,    98,   120,   -66,    55,    73,   124,   -66,
+     -66,   -66,   126,    55,   127,   128,   -66,   -66,   -66,   -66,
+     130,   -66,   -66,   125,   133,   -66,    39,    68,   -66,     8,
+     157,    55,   -66,   -66,   -66,   -66,   -66,    56,   132,   -66
 };
 
 /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -661,73 +662,78 @@ static const yytype_int8 yydefact[] =
        2,     0,     4,     1,     0,     0,     0,     0,     0,     5,
        7,     6,     3,     0,    16,    11,    30,    10,     0,     8,
        0,     0,     0,    43,    42,    51,    40,    41,     0,     0,
-      38,    39,    19,    13,     0,     0,     0,     0,    23,    31,
-      36,    37,     0,    56,     0,     0,     0,     9,     0,     0,
-       0,     0,     0,     0,     0,     0,     0,    20,     0,     0,
-      56,     0,     0,     0,     0,    35,    58,     0,    57,    44,
-      50,    55,     0,    46,    47,    48,    49,    52,    53,    54,
-      22,    17,     0,     0,    14,    15,     0,     0,     0,     0,
-       0,     0,     0,    45,     0,     0,     0,    21,    12,    32,
-       0,     0,     0,     0,    62,    59,    25,    33,     0,    30,
-      30,     0,    24,    34,     0,     0,    18,     0,     0,     0,
-      29,    26,    27,    60,    61,     0,     0,    28
+       0,    38,    39,    19,    13,     0,     0,     0,     0,    23,
+      31,    36,    37,     0,    62,     0,     0,    60,     0,     0,
+       9,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,    20,     0,     0,    62,     0,
+       0,     0,     0,    35,    64,     0,    63,    44,    50,    61,
+       0,    46,    47,    48,    49,    52,    57,    53,    54,    55,
+      56,    58,    59,    22,    17,     0,     0,    14,    15,     0,
+       0,     0,     0,     0,     0,    45,     0,     0,     0,    21,
+      12,    32,     0,     0,     0,     0,    68,    65,    25,    33,
+       0,    30,    30,     0,    24,    34,     0,     0,    18,     0,
+       0,     0,    29,    26,    27,    66,    67,     0,     0,    28
 };
 
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -58,   -58,   -58,   -58,   -57,   -58,   -58,   -58,    75,   -58,
-     -58,   -58,    57,   -58,   -58,   -58,   -58,   -13,    26,   -18,
-     -25,   -23,    80,   -58,   -58,   -58,   -58
+     -66,   -66,   -66,   -66,   -65,   -66,   -66,   -66,    97,   -66,
+     -66,   -66,    67,   -66,   -66,   -66,   -66,   -47,    40,   -18,
+     -25,   -23,    99,   -66,   -66,   -66,   -66
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
-static const yytype_int8 yydefgoto[] =
+static const yytype_uint8 yydefgoto[] =
 {
-       0,     1,     2,     4,     9,    10,    21,    58,    11,    20,
-      96,    56,    57,    12,   111,   112,   121,    22,    39,    66,
-      30,    31,    67,    68,    40,    41,    42
+       0,     1,     2,     4,     9,    10,    21,    66,    11,    20,
+     108,    64,    65,    12,   123,   124,   133,    22,    40,    74,
+      31,    32,    75,    76,    41,    42,    43
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
    positive, shift that token.  If negative, reduce the rule whose
    number is the opposite.  If YYTABLE_NINF, syntax error.  */
-static const yytype_int8 yytable[] =
+static const yytype_uint8 yytable[] =
 {
-      29,    84,    13,    45,    13,    46,     3,    23,    59,    24,
-      25,    26,    27,    23,    17,    24,    43,    26,    27,    44,
-       5,     6,    14,    73,    74,    75,    76,    77,    78,    79,
-      18,    60,    50,    51,    61,    15,    28,    89,    89,    90,
-      91,    86,    72,    34,    81,    82,    92,    95,    83,    34,
-      19,    47,    35,    36,    37,   120,    34,    16,    35,    36,
-      37,     5,     6,    59,    33,    35,    36,    37,     7,     8,
-      32,    38,    48,    49,    50,    51,   105,   123,    48,    49,
-      50,    51,    55,   108,   124,    52,    60,    53,    54,    61,
-      48,    49,    50,    51,    65,    70,   114,   115,    62,   117,
-     118,   126,    63,    64,    69,    71,    80,    70,    35,    36,
-      37,   119,    88,    48,    49,    50,    51,    93,    98,    94,
-      52,    99,    53,    54,   100,   101,   102,   103,   104,   106,
-     109,   107,   125,    85,   110,   113,   116,   127,   122,    97,
-      87
+      30,    97,     3,    46,    48,    47,    49,    61,    62,    61,
+      62,    13,    44,    35,    13,    45,    14,    67,    94,    95,
+      79,    15,    36,    37,    38,    16,    81,    82,    83,    84,
+      85,    86,    87,    88,    89,    90,    46,    46,    91,    92,
+      68,    39,    35,    69,    17,    46,    46,   102,   103,    99,
+      67,    36,    37,    38,   104,   107,     5,     6,    23,   132,
+      24,    25,    26,    27,    23,    18,    24,    33,    26,    27,
+     135,    35,    34,    68,   126,   127,    69,    28,    53,    54,
+      36,    37,    38,    50,    96,    19,    63,    29,   117,    51,
+      52,    53,    54,    80,    70,   120,    71,    72,    73,   136,
+      51,    52,    53,    54,    77,    93,    78,    55,    56,    57,
+      58,    59,    60,   138,    61,    62,   101,    78,    61,    62,
+     105,     5,     6,    51,    52,    53,    54,   114,     7,     8,
+     106,   115,    51,    52,    53,    54,   129,   130,   110,    55,
+      56,    57,    58,    59,    60,    36,    37,    38,   131,    61,
+     111,   113,   112,   116,   118,   119,   128,   121,   122,   125,
+     137,   139,   109,    98,   134,     0,     0,   100
 };
 
-static const yytype_int8 yycheck[] =
+static const yytype_int16 yycheck[] =
 {
-      18,    58,     3,    28,     3,    28,     0,     3,     9,     5,
-       6,     7,     8,     3,    29,     5,    32,     7,     8,    35,
-       3,     4,     3,    48,    49,    50,    51,    52,    53,    54,
-       9,    32,    18,    19,    35,     3,    32,    62,    63,    62,
-      63,    59,    32,     3,    33,    34,    64,    72,    31,     3,
-      29,    29,    12,    13,    14,   112,     3,    30,    12,    13,
-      14,     3,     4,     9,    30,    12,    13,    14,    10,    11,
-      32,    31,    16,    17,    18,    19,    94,    31,    16,    17,
-      18,    19,     4,   101,    31,    23,    32,    25,    26,    35,
-      16,    17,    18,    19,    29,    33,   109,   110,    32,     3,
-       4,   119,    32,    32,     3,    33,     3,    33,    12,    13,
-      14,    15,     3,    16,    17,    18,    19,    33,    29,    34,
-      23,    29,    25,    26,    33,     9,    33,    33,    33,    30,
-      30,    29,     3,    58,    30,    29,    31,    29,   112,    82,
-      60
+      18,    66,     0,    28,    29,    28,    29,    20,    21,    20,
+      21,     3,    32,     3,     3,    35,     3,     9,    33,    34,
+      33,     3,    12,    13,    14,    30,    51,    52,    53,    54,
+      55,    56,    57,    58,    59,    60,    61,    62,    61,    62,
+      32,    31,     3,    35,    29,    70,    71,    70,    71,    67,
+       9,    12,    13,    14,    72,    80,     3,     4,     3,   124,
+       5,     6,     7,     8,     3,     9,     5,    32,     7,     8,
+      31,     3,    30,    32,   121,   122,    35,    22,    18,    19,
+      12,    13,    14,    29,    31,    29,     4,    32,   106,    16,
+      17,    18,    19,    32,    32,   113,    32,    32,    29,    31,
+      16,    17,    18,    19,     3,     3,    33,    23,    24,    25,
+      26,    27,    28,   131,    20,    21,     3,    33,    20,    21,
+      33,     3,     4,    16,    17,    18,    19,    33,    10,    11,
+      34,    33,    16,    17,    18,    19,     3,     4,    29,    23,
+      24,    25,    26,    27,    28,    12,    13,    14,    15,    20,
+      29,     9,    33,    33,    30,    29,    31,    30,    30,    29,
+       3,    29,    95,    66,   124,    -1,    -1,    68
 };
 
 /* YYSTOS[STATE-NUM] -- The symbol kind of the accessing symbol of
@@ -736,17 +742,18 @@ static const yytype_int8 yystos[] =
 {
        0,    37,    38,     0,    39,     3,     4,    10,    11,    40,
       41,    44,    49,     3,     3,     3,    30,    29,     9,    29,
-      45,    42,    53,     3,     5,     6,     7,     8,    32,    55,
-      56,    57,    32,    30,     3,    12,    13,    14,    31,    54,
-      60,    61,    62,    32,    35,    56,    57,    29,    16,    17,
-      18,    19,    23,    25,    26,     4,    47,    48,    43,     9,
-      32,    35,    32,    32,    32,    29,    55,    58,    59,     3,
-      33,    33,    32,    56,    56,    56,    56,    56,    56,    56,
-       3,    33,    34,    31,    40,    44,    55,    58,     3,    56,
-      57,    57,    55,    33,    34,    56,    46,    48,    29,    29,
-      33,     9,    33,    33,    33,    55,    30,    29,    55,    30,
-      30,    50,    51,    29,    53,    53,    31,     3,     4,    15,
-      40,    52,    54,    31,    31,     3,    55,    29
+      45,    42,    53,     3,     5,     6,     7,     8,    22,    32,
+      55,    56,    57,    32,    30,     3,    12,    13,    14,    31,
+      54,    60,    61,    62,    32,    35,    56,    57,    56,    57,
+      29,    16,    17,    18,    19,    23,    24,    25,    26,    27,
+      28,    20,    21,     4,    47,    48,    43,     9,    32,    35,
+      32,    32,    32,    29,    55,    58,    59,     3,    33,    33,
+      32,    56,    56,    56,    56,    56,    56,    56,    56,    56,
+      56,    57,    57,     3,    33,    34,    31,    40,    44,    55,
+      58,     3,    57,    57,    55,    33,    34,    56,    46,    48,
+      29,    29,    33,     9,    33,    33,    33,    55,    30,    29,
+      55,    30,    30,    50,    51,    29,    53,    53,    31,     3,
+       4,    15,    40,    52,    54,    31,    31,     3,    55,    29
 };
 
 /* YYR1[RULE-NUM] -- Symbol kind of the left-hand side of rule RULE-NUM.  */
@@ -757,8 +764,8 @@ static const yytype_int8 yyr1[] =
       47,    47,    48,    49,    50,    51,    51,    52,    52,    52,
       53,    53,    54,    54,    54,    54,    54,    54,    55,    55,
       56,    56,    56,    56,    56,    56,    56,    56,    56,    56,
-      56,    57,    57,    57,    57,    57,    58,    58,    59,    59,
-      60,    61,    62
+      56,    57,    57,    57,    57,    57,    57,    57,    57,    57,
+      57,    57,    58,    58,    59,    59,    60,    61,    62
 };
 
 /* YYR2[RULE-NUM] -- Number of symbols on the right-hand side of rule RULE-NUM.  */
@@ -769,8 +776,8 @@ static const yytype_int8 yyr2[] =
        1,     3,     2,     4,     1,     0,     2,     1,     3,     1,
        0,     2,     4,     5,     6,     2,     1,     1,     1,     1,
        1,     1,     1,     1,     3,     4,     3,     3,     3,     3,
-       3,     1,     3,     3,     3,     3,     0,     1,     1,     3,
-       7,     7,     4
+       3,     1,     3,     3,     3,     3,     3,     3,     3,     3,
+       2,     3,     0,     1,     1,     3,     7,     7,     4
 };
 
 
@@ -1242,7 +1249,7 @@ yyreduce:
           fout.close();
           runtimeOut.open("runtime.txt", std::ios::trunc);
      }
-#line 1246 "proiect.tab.c"
+#line 1253 "proiect.tab.c"
     break;
 
   case 3: /* progr: $@1 declarations main  */
@@ -1253,100 +1260,130 @@ yyreduce:
           if(errorCount == 0) std::cout<<"Program compilat cu succes!"<<std::endl;
           else std::cout<<"Programul contine erori!"<<std::endl;
      }
-#line 1257 "proiect.tab.c"
+#line 1264 "proiect.tab.c"
     break;
 
   case 8: /* var_decl: TIP ID ';'  */
 #line 92 "proiect.y"
          {
           if (!currentScope->addSymbol(IdInfo((yyvsp[-1].strVal),(yyvsp[-2].strVal),VARIABLE,"")))
-               yyerror("Variabila deja declarata!");
+          {
+               std::string msg = "Variabila '" + std::string((yyvsp[-1].strVal)) + "' a fost deja declarata in acest scope.";
+               yyerror(msg.c_str());
+          }
          }
-#line 1266 "proiect.tab.c"
+#line 1276 "proiect.tab.c"
     break;
 
   case 9: /* var_decl: TIP ID ASSIGN general_expr ';'  */
-#line 97 "proiect.y"
+#line 100 "proiect.y"
          {
           if (!currentScope->addSymbol(IdInfo((yyvsp[-3].strVal),(yyvsp[-4].strVal),VARIABLE,"initializata")))
-               yyerror("Variabila deja declarata!");
-          if ((yyvsp[-1].node) && (yyvsp[-1].node)->exprType != stringToType((yyvsp[-4].strVal))) yyerror("Tip incorect init");
+               {
+                    std::string msg = "Variabila '" + std::string((yyvsp[-3].strVal)) + "' a fost deja declarata in acest scope.";
+                    yyerror(msg.c_str());
+               }
+          if ((yyvsp[-1].node) && (yyvsp[-1].node)->exprType != stringToType((yyvsp[-4].strVal)))
+          {
+               std::string msg = "Tip incompatibil la initializarea variabilei '" + std::string((yyvsp[-3].strVal)) + 
+                                 "': s-a asteptat '" + std::string((yyvsp[-4].strVal)) + "', dar s-a primit '" + 
+                                 typeToString((yyvsp[-1].node)->exprType) + "'.";
+               yyerror(msg.c_str());
+          }
           if((yyvsp[-1].node)) delete (yyvsp[-1].node); // Aici e ok sa stergem init-ul static din declaratii, AST-ul executabil e in main
          }
-#line 1277 "proiect.tab.c"
+#line 1296 "proiect.tab.c"
     break;
 
   case 10: /* var_decl: ID ID ';'  */
-#line 104 "proiect.y"
+#line 116 "proiect.y"
          {
           IdInfo* cls = currentScope->lookup((yyvsp[-2].strVal));
-          if(!cls || cls->kind != CLASS_NAME) yyerror("Clasa nedefinita");
+          if(!cls || cls->kind != CLASS_NAME)
+          {
+               std::string msg = "Tipul '" + std::string((yyvsp[-2].strVal)) + "' nu este definit ca o clasa.";
+               yyerror(msg.c_str());
+          }
           if (!currentScope->addSymbol(IdInfo((yyvsp[-1].strVal),(yyvsp[-2].strVal),VARIABLE,"object")))
-               yyerror("Obiect deja declarat!");
+               {
+                    std::string msg = "Obiectul '" + std::string((yyvsp[-1].strVal)) + "' a fost deja declarat.";
+                    yyerror(msg.c_str());
+               }
          }
-#line 1288 "proiect.tab.c"
+#line 1314 "proiect.tab.c"
     break;
 
   case 11: /* $@2: %empty  */
-#line 113 "proiect.y"
+#line 132 "proiect.y"
            {
                if(!currentScope->addSymbol(IdInfo((yyvsp[0].strVal), "class", CLASS_NAME, "")))
-                    yyerror("Clasa deja existenta!");
+                    {
+                         std::string msg = "Clasa '" + std::string((yyvsp[0].strVal)) + "' este deja definita.";
+                         yyerror(msg.c_str());
+                    }
                currentScope = new SymTable("Class "+std::string((yyvsp[0].strVal)), currentScope);
            }
-#line 1298 "proiect.tab.c"
+#line 1327 "proiect.tab.c"
     break;
 
   case 12: /* class_decl: CLASS ID $@2 '{' class_member_list '}' ';'  */
-#line 119 "proiect.y"
+#line 141 "proiect.y"
            {
                SymTable* clsScope = currentScope; 
+               currentScope->printTable();
                currentScope = currentScope->getParent(); 
                IdInfo* clsInfo = currentScope->lookup((yyvsp[-5].strVal));
                if(clsInfo) { clsInfo->defScope = clsScope; currentScope->updateSymbol(*clsInfo); }
            }
-#line 1309 "proiect.tab.c"
+#line 1339 "proiect.tab.c"
     break;
 
   case 16: /* $@3: %empty  */
-#line 129 "proiect.y"
+#line 152 "proiect.y"
                    { currentParamTypes.clear(); }
-#line 1315 "proiect.tab.c"
+#line 1345 "proiect.tab.c"
     break;
 
   case 17: /* $@4: %empty  */
-#line 130 "proiect.y"
+#line 153 "proiect.y"
           {
                IdInfo func((yyvsp[-4].strVal), (yyvsp[-5].strVal), FUNCTION, "");
                for(auto& p : currentParamTypes) func.param_types.push_back(p.first);
-               if (!currentScope->addSymbol(func)) yyerror("Functia deja declarata!");
+               if (!currentScope->addSymbol(func)) {
+                    std::string msg = "Functia '" + std::string((yyvsp[-4].strVal)) + "' este deja definita in acest scope.";
+                    yyerror(msg.c_str());
+               }
                currentScope = new SymTable("Function "+std::string((yyvsp[-4].strVal)), currentScope);
                for (auto& p : currentParamTypes)
                     if (!currentScope->addSymbol(IdInfo(p.second, p.first, VARIABLE, "param")))
-                         yyerror("Parametru deja declarat!");
+                         {
+                              std::string msg = "Parametrul '" + p.second + "' este deja definit in functia '" + std::string((yyvsp[-4].strVal)) + "'.";
+                              yyerror(msg.c_str());
+                         }
           }
-#line 1329 "proiect.tab.c"
+#line 1365 "proiect.tab.c"
     break;
 
   case 18: /* func_decl: TIP ID $@3 '(' param_list ')' $@4 '{' func_body '}'  */
-#line 140 "proiect.y"
+#line 169 "proiect.y"
           {
                SymTable* fnScope = currentScope;
+               currentScope->printTable();
                currentScope = currentScope->getParent(); 
                IdInfo* funcInfo = currentScope->lookup((yyvsp[-8].strVal));
                if(funcInfo) { funcInfo->defScope = fnScope; currentScope->updateSymbol(*funcInfo); }
           }
-#line 1340 "proiect.tab.c"
+#line 1377 "proiect.tab.c"
     break;
 
   case 22: /* param: TIP ID  */
-#line 149 "proiect.y"
+#line 179 "proiect.y"
                { currentParamTypes.push_back({(yyvsp[-1].strVal), (yyvsp[0].strVal)}); }
-#line 1346 "proiect.tab.c"
+#line 1383 "proiect.tab.c"
     break;
 
   case 23: /* main: MAIN '{' statement_list '}'  */
-#line 152 "proiect.y"
+#line 182 "proiect.y"
      {
           for(ASTNode* st : *(yyvsp[-1].nodeList)){
                if(!st) continue;
@@ -1357,103 +1394,131 @@ yyreduce:
           }
           delete (yyvsp[-1].nodeList);
      }
-#line 1361 "proiect.tab.c"
+#line 1398 "proiect.tab.c"
     break;
 
   case 24: /* func_body: func_statement_list  */
-#line 164 "proiect.y"
+#line 194 "proiect.y"
                                 { if((yyvsp[0].nodeList)) { for(auto n:*(yyvsp[0].nodeList)) if(n) delete n; delete (yyvsp[0].nodeList); } }
-#line 1367 "proiect.tab.c"
+#line 1404 "proiect.tab.c"
     break;
 
   case 25: /* func_statement_list: %empty  */
-#line 165 "proiect.y"
+#line 196 "proiect.y"
                       { (yyval.nodeList) = new std::vector<ASTNode*>(); }
-#line 1373 "proiect.tab.c"
+#line 1410 "proiect.tab.c"
     break;
 
   case 26: /* func_statement_list: func_statement_list func_statement  */
-#line 166 "proiect.y"
+#line 197 "proiect.y"
                                                          { (yyval.nodeList) = (yyvsp[-1].nodeList); if((yyvsp[0].node)) (yyval.nodeList)->push_back((yyvsp[0].node)); }
-#line 1379 "proiect.tab.c"
+#line 1416 "proiect.tab.c"
     break;
 
   case 27: /* func_statement: statement  */
-#line 167 "proiect.y"
+#line 199 "proiect.y"
                            { (yyval.node) = (yyvsp[0].node); }
-#line 1385 "proiect.tab.c"
+#line 1422 "proiect.tab.c"
     break;
 
   case 28: /* func_statement: RETURN general_expr ';'  */
-#line 167 "proiect.y"
-                                                                  { (yyval.node) = (yyvsp[-1].node); }
-#line 1391 "proiect.tab.c"
+#line 200 "proiect.y"
+                                         { (yyval.node) = (yyvsp[-1].node); }
+#line 1428 "proiect.tab.c"
     break;
 
   case 29: /* func_statement: var_decl  */
-#line 167 "proiect.y"
-                                                                                          { (yyval.node) = nullptr; }
-#line 1397 "proiect.tab.c"
+#line 201 "proiect.y"
+                          { (yyval.node) = nullptr; }
+#line 1434 "proiect.tab.c"
     break;
 
   case 30: /* statement_list: %empty  */
-#line 169 "proiect.y"
+#line 203 "proiect.y"
                  { (yyval.nodeList) = new std::vector<ASTNode*>(); }
-#line 1403 "proiect.tab.c"
+#line 1440 "proiect.tab.c"
     break;
 
   case 31: /* statement_list: statement_list statement  */
-#line 170 "proiect.y"
+#line 204 "proiect.y"
                                           { (yyval.nodeList) = (yyvsp[-1].nodeList); if((yyvsp[0].node)) (yyval.nodeList)->push_back((yyvsp[0].node)); }
-#line 1409 "proiect.tab.c"
+#line 1446 "proiect.tab.c"
     break;
 
   case 32: /* statement: ID ASSIGN general_expr ';'  */
-#line 173 "proiect.y"
+#line 207 "proiect.y"
           {
                IdInfo* info = currentScope->lookup((yyvsp[-3].strVal));
-               if(!info){ yyerror("Var nedeclarata"); if((yyvsp[-1].node)) delete (yyvsp[-1].node); (yyval.node)=nullptr; }
+               if(!info){ std::string msg = "Variabila '" + std::string((yyvsp[-3].strVal)) + "' nu a fost declarata.";
+                    yyerror(msg.c_str()); if((yyvsp[-1].node)) delete (yyvsp[-1].node); (yyval.node)=nullptr; }
                else {
                     std::string err;
                     (yyval.node) = ASTNode::makeAssign(ASTNode::id((yyvsp[-3].strVal), stringToType(info->type)), (yyvsp[-1].node), yylineno, err);
                     if(!err.empty()) { yyerror(err.c_str()); delete (yyval.node); (yyval.node)=nullptr; }
                }
           }
-#line 1423 "proiect.tab.c"
+#line 1461 "proiect.tab.c"
     break;
 
   case 33: /* statement: ID '(' call_args ')' ';'  */
-#line 183 "proiect.y"
+#line 218 "proiect.y"
           {
                IdInfo* f = currentScope->lookup((yyvsp[-4].strVal));
-               if(!f || f->kind!=FUNCTION) yyerror("Functie invalida");
-               else if((yyvsp[-2].nodeList)->size() != f->param_types.size()) yyerror("Nr param incorect");
+               if(!f || f->kind!=FUNCTION) {
+                    std::string msg = "Functia '" + std::string((yyvsp[-4].strVal)) + "' nu este declarata.";
+                    yyerror(msg.c_str());
+               }
+               else if((yyvsp[-2].nodeList)->size() != f->param_types.size()) {
+                    std::string msg = "Functia '" + std::string((yyvsp[-4].strVal)) + "' asteapta " + std::to_string(f->param_types.size()) + 
+                                      " parametri, dar i s-au dat " + std::to_string((yyvsp[-2].nodeList)->size()) + ".";
+                    yyerror(msg.c_str());
+               }
                else {
                    for(size_t i=0; i<(yyvsp[-2].nodeList)->size(); ++i) 
-                       if((*(yyvsp[-2].nodeList))[i]->exprType != stringToType(f->param_types[i])) yyerror("Tip param incorect");
+                       if((*(yyvsp[-2].nodeList))[i]->exprType != stringToType(f->param_types[i])){
+                               std::string msg = "Tip incompatibil la apelul functiei '" + std::string((yyvsp[-4].strVal)) + 
+                                              "' pentru parametrul " + std::to_string(i+1) + 
+                                              ": s-a asteptat '" + f->param_types[i] + "', dar s-a primit '" + 
+                                              typeToString((*(yyvsp[-2].nodeList))[i]->exprType) + "'.";
+                               yyerror(msg.c_str());
+                       }
                }
                // Aici, daca am vrea apeluri de functii void, ar trebui facut nod Call.
                // Deocamdata doar curatam memoria pentru ca nu ai implementat Call statement in AST.
                for(auto n:*(yyvsp[-2].nodeList)) delete n; delete (yyvsp[-2].nodeList); (yyval.node)=nullptr; 
           }
-#line 1440 "proiect.tab.c"
+#line 1491 "proiect.tab.c"
     break;
 
   case 34: /* statement: ID '.' ID ASSIGN general_expr ';'  */
-#line 196 "proiect.y"
+#line 244 "proiect.y"
           {
                 IdInfo* o = currentScope->lookup((yyvsp[-5].strVal));
                 std::string fieldType = "unknown";
 
-                if(!o || o->kind!=VARIABLE) yyerror("Nu e obiect");
+                if(!o || o->kind!=VARIABLE) {
+                    std::string msg = "Obiectul '" + std::string((yyvsp[-5].strVal)) + "' nu este declarat sau nu este un obiect.";
+                    yyerror(msg.c_str());
+                }
                 else {
                      IdInfo* c = currentScope->lookup(o->type);
-                     if(!c || !c->defScope) yyerror("Clasa invalida");
+                     if(!c || !c->defScope) {
+                         std::string msg = "Clasa obiectului '" + std::string((yyvsp[-5].strVal)) + "' nu este definita.";
+                         yyerror(msg.c_str());
+                     }
                      else {
                          IdInfo* f = c->defScope->lookup((yyvsp[-3].strVal));
-                         if(!f) yyerror("Camp inexistent");
+                         if(!f) {
+                               std::string msg = "Campul '" + std::string((yyvsp[-3].strVal)) + "' nu exista in clasa '" + o->type + "'.";
+                               yyerror(msg.c_str());
+                         }
                          else {
-                            if((yyvsp[-1].node)->exprType != stringToType(f->type)) yyerror("Tip incompatibil");
+                            if((yyvsp[-1].node)->exprType != stringToType(f->type)) {
+                                   std::string msg = "Tip incompatibil la atribuirea campului '" + std::string((yyvsp[-3].strVal)) + 
+                                                       "' al obiectului '" + std::string((yyvsp[-5].strVal)) + "': s-a asteptat '" + f->type + 
+                                                       "', dar s-a primit '" + typeToString((yyvsp[-1].node)->exprType) + "'.";
+                                   yyerror(msg.c_str());
+                            }
                             fieldType = f->type;
                          }
                      }
@@ -1470,69 +1535,72 @@ yyreduce:
                 
                 if(!err.empty()) { yyerror(err.c_str()); delete (yyval.node); (yyval.node)=nullptr; }
           }
-#line 1474 "proiect.tab.c"
+#line 1539 "proiect.tab.c"
     break;
 
   case 35: /* statement: print_call ';'  */
-#line 225 "proiect.y"
+#line 287 "proiect.y"
                            { (yyval.node) = (yyvsp[-1].node); }
-#line 1480 "proiect.tab.c"
+#line 1545 "proiect.tab.c"
     break;
 
   case 36: /* statement: if_statement  */
-#line 226 "proiect.y"
+#line 288 "proiect.y"
                          { (yyval.node) = (yyvsp[0].node); }
-#line 1486 "proiect.tab.c"
+#line 1551 "proiect.tab.c"
     break;
 
   case 37: /* statement: while_statement  */
-#line 227 "proiect.y"
+#line 289 "proiect.y"
                             { (yyval.node) = (yyvsp[0].node); }
-#line 1492 "proiect.tab.c"
+#line 1557 "proiect.tab.c"
     break;
 
   case 38: /* general_expr: arith_expr  */
-#line 230 "proiect.y"
+#line 292 "proiect.y"
                           { (yyval.node) = (yyvsp[0].node); }
-#line 1498 "proiect.tab.c"
+#line 1563 "proiect.tab.c"
     break;
 
   case 39: /* general_expr: bool_expr  */
-#line 230 "proiect.y"
+#line 292 "proiect.y"
                                                    { (yyval.node) = (yyvsp[0].node); }
-#line 1504 "proiect.tab.c"
+#line 1569 "proiect.tab.c"
     break;
 
   case 40: /* arith_expr: INT_VAL  */
-#line 232 "proiect.y"
+#line 294 "proiect.y"
                      { (yyval.node) = ASTNode::literal(Value::fromInt((yyvsp[0].intVal))); }
-#line 1510 "proiect.tab.c"
+#line 1575 "proiect.tab.c"
     break;
 
   case 41: /* arith_expr: FLOAT_VAL  */
-#line 233 "proiect.y"
+#line 295 "proiect.y"
                        { (yyval.node) = ASTNode::literal(Value::fromFloat((yyvsp[0].floatVal))); }
-#line 1516 "proiect.tab.c"
+#line 1581 "proiect.tab.c"
     break;
 
   case 42: /* arith_expr: STRING_VAL  */
-#line 234 "proiect.y"
+#line 296 "proiect.y"
                         { std::string s((yyvsp[0].strVal)); (yyval.node) = ASTNode::literal(Value::fromString(s.substr(1, s.size()-2))); }
-#line 1522 "proiect.tab.c"
+#line 1587 "proiect.tab.c"
     break;
 
   case 43: /* arith_expr: ID  */
-#line 235 "proiect.y"
+#line 297 "proiect.y"
                 {
                 IdInfo* i = currentScope->lookup((yyvsp[0].strVal));
                 (yyval.node) = i ? ASTNode::id((yyvsp[0].strVal), stringToType(i->type)) : ASTNode::other(ValueType::UNKNOWN);
-                if(!i) yyerror("Var nedeclarata");
+                if(!i) {
+                    std::string msg = "Variabila '" + std::string((yyvsp[0].strVal)) + "' nu a fost declarata.";
+                    yyerror(msg.c_str());
+                }
            }
-#line 1532 "proiect.tab.c"
+#line 1600 "proiect.tab.c"
     break;
 
   case 44: /* arith_expr: ID '.' ID  */
-#line 240 "proiect.y"
+#line 305 "proiect.y"
                        {
                 IdInfo* o = currentScope->lookup((yyvsp[-2].strVal));
                 ValueType t = ValueType::UNKNOWN;
@@ -1540,145 +1608,196 @@ yyreduce:
                      IdInfo* c = currentScope->lookup(o->type);
                      if(c && c->defScope) {
                          IdInfo* f = c->defScope->lookup((yyvsp[0].strVal));
-                         if(f) t = stringToType(f->type); else yyerror("Camp lipsa");
-                     } else yyerror("Clasa lipsa");
-                } else yyerror("Nu e obiect");
+                         if(f) t = stringToType(f->type); else {
+                               std::string msg = "Campul '" + std::string((yyvsp[0].strVal)) + "' nu exista in clasa '" + o->type + "'.";
+                               yyerror(msg.c_str());
+                         }
+                     } else {
+                         std::string msg = "Clasa obiectului '" + std::string((yyvsp[-2].strVal)) + "' nu este definita.";
+                         yyerror(msg.c_str());
+                     }
+                } else {
+                         std::string msg = "Obiectul '" + std::string((yyvsp[-2].strVal)) + "' nu este declarat sau nu este un obiect.";
+                         yyerror(msg.c_str());
+                }
                 // Aici construim un nod de acces membru pentru read
                 ASTNode* obj = ASTNode::id((yyvsp[-2].strVal), stringToType(o ? o->type : "unknown"));
                 ASTNode* field = ASTNode::id((yyvsp[0].strVal), t);
                 (yyval.node) = new ASTNode(".", t, obj, field);
            }
-#line 1552 "proiect.tab.c"
+#line 1629 "proiect.tab.c"
     break;
 
   case 45: /* arith_expr: ID '(' call_args ')'  */
-#line 255 "proiect.y"
+#line 329 "proiect.y"
                                   {
                 IdInfo* f = currentScope->lookup((yyvsp[-3].strVal));
                 ValueType t = ValueType::UNKNOWN;
                 if(f && f->kind==FUNCTION) {
                     t = stringToType(f->type);
-                    if((yyvsp[-1].nodeList)->size() != f->param_types.size()) yyerror("Nr param gresit");
-                } else yyerror("Functie lipsa");
+                    if((yyvsp[-1].nodeList)->size() != f->param_types.size()) {
+                         std::string msg = "Apel invalid functie '" + std::string((yyvsp[-3].strVal)) + "': numar parametri gresit.";
+                         yyerror(msg.c_str());
+                    }
+                } else {
+                         std::string msg = "Functia '" + std::string((yyvsp[-3].strVal)) + "' nu este declarata.";
+                         yyerror(msg.c_str());
+                }
                 for(auto n:*(yyvsp[-1].nodeList)) delete n; delete (yyvsp[-1].nodeList); (yyval.node)=ASTNode::other(t);
            }
-#line 1566 "proiect.tab.c"
+#line 1649 "proiect.tab.c"
     break;
 
   case 46: /* arith_expr: arith_expr PLUS arith_expr  */
-#line 264 "proiect.y"
+#line 344 "proiect.y"
                                         { std::string e; (yyval.node)=ASTNode::makeBinary("+",(yyvsp[-2].node),(yyvsp[0].node),yylineno,e); if(e.size()) yyerror(e.c_str()); }
-#line 1572 "proiect.tab.c"
+#line 1655 "proiect.tab.c"
     break;
 
   case 47: /* arith_expr: arith_expr MINUS arith_expr  */
-#line 265 "proiect.y"
+#line 345 "proiect.y"
                                          { std::string e; (yyval.node)=ASTNode::makeBinary("-",(yyvsp[-2].node),(yyvsp[0].node),yylineno,e); if(e.size()) yyerror(e.c_str()); }
-#line 1578 "proiect.tab.c"
+#line 1661 "proiect.tab.c"
     break;
 
   case 48: /* arith_expr: arith_expr MUL arith_expr  */
-#line 266 "proiect.y"
+#line 346 "proiect.y"
                                        { std::string e; (yyval.node)=ASTNode::makeBinary("*",(yyvsp[-2].node),(yyvsp[0].node),yylineno,e); if(e.size()) yyerror(e.c_str()); }
-#line 1584 "proiect.tab.c"
+#line 1667 "proiect.tab.c"
     break;
 
   case 49: /* arith_expr: arith_expr DIV arith_expr  */
-#line 267 "proiect.y"
+#line 347 "proiect.y"
                                        { std::string e; (yyval.node)=ASTNode::makeBinary("/",(yyvsp[-2].node),(yyvsp[0].node),yylineno,e); if(e.size()) yyerror(e.c_str()); }
-#line 1590 "proiect.tab.c"
+#line 1673 "proiect.tab.c"
     break;
 
   case 50: /* arith_expr: '(' arith_expr ')'  */
-#line 268 "proiect.y"
+#line 348 "proiect.y"
                                 { (yyval.node) = (yyvsp[-1].node); }
-#line 1596 "proiect.tab.c"
+#line 1679 "proiect.tab.c"
     break;
 
   case 51: /* bool_expr: BOOL_VAL  */
-#line 271 "proiect.y"
+#line 351 "proiect.y"
                      { (yyval.node) = ASTNode::literal(Value::fromBool(std::string((yyvsp[0].strVal))=="true")); }
-#line 1602 "proiect.tab.c"
+#line 1685 "proiect.tab.c"
     break;
 
   case 52: /* bool_expr: arith_expr EQ arith_expr  */
-#line 272 "proiect.y"
+#line 352 "proiect.y"
                                      { std::string e; (yyval.node)=ASTNode::makeCompare("==",(yyvsp[-2].node),(yyvsp[0].node),yylineno,e); if(e.size()) yyerror(e.c_str()); }
-#line 1608 "proiect.tab.c"
+#line 1691 "proiect.tab.c"
     break;
 
   case 53: /* bool_expr: arith_expr LT arith_expr  */
-#line 273 "proiect.y"
+#line 353 "proiect.y"
                                      { std::string e; (yyval.node)=ASTNode::makeCompare("<",(yyvsp[-2].node),(yyvsp[0].node),yylineno,e); if(e.size()) yyerror(e.c_str()); }
-#line 1614 "proiect.tab.c"
+#line 1697 "proiect.tab.c"
     break;
 
   case 54: /* bool_expr: arith_expr GT arith_expr  */
-#line 274 "proiect.y"
+#line 354 "proiect.y"
                                      { std::string e; (yyval.node)=ASTNode::makeCompare(">",(yyvsp[-2].node),(yyvsp[0].node),yylineno,e); if(e.size()) yyerror(e.c_str()); }
-#line 1620 "proiect.tab.c"
+#line 1703 "proiect.tab.c"
     break;
 
-  case 55: /* bool_expr: '(' bool_expr ')'  */
-#line 275 "proiect.y"
+  case 55: /* bool_expr: arith_expr LE arith_expr  */
+#line 355 "proiect.y"
+                                     { std::string e; (yyval.node)=ASTNode::makeCompare("<=",(yyvsp[-2].node),(yyvsp[0].node),yylineno,e); if(e.size()) yyerror(e.c_str()); }
+#line 1709 "proiect.tab.c"
+    break;
+
+  case 56: /* bool_expr: arith_expr GE arith_expr  */
+#line 356 "proiect.y"
+                                     { std::string e; (yyval.node)=ASTNode::makeCompare(">=",(yyvsp[-2].node),(yyvsp[0].node),yylineno,e); if(e.size()) yyerror(e.c_str()); }
+#line 1715 "proiect.tab.c"
+    break;
+
+  case 57: /* bool_expr: arith_expr NEQ arith_expr  */
+#line 357 "proiect.y"
+                                      { std::string e; (yyval.node)=ASTNode::makeCompare("!=",(yyvsp[-2].node),(yyvsp[0].node),yylineno,e); if(e.size()) yyerror(e.c_str()); }
+#line 1721 "proiect.tab.c"
+    break;
+
+  case 58: /* bool_expr: bool_expr AND bool_expr  */
+#line 358 "proiect.y"
+                                    { std::string e; (yyval.node)=ASTNode::makeBinary("AND",(yyvsp[-2].node),(yyvsp[0].node),yylineno,e); if(e.size()) yyerror(e.c_str()); }
+#line 1727 "proiect.tab.c"
+    break;
+
+  case 59: /* bool_expr: bool_expr OR bool_expr  */
+#line 359 "proiect.y"
+                                   { std::string e; (yyval.node)=ASTNode::makeBinary("OR",(yyvsp[-2].node),(yyvsp[0].node),yylineno,e); if(e.size()) yyerror(e.c_str()); }
+#line 1733 "proiect.tab.c"
+    break;
+
+  case 60: /* bool_expr: NOT bool_expr  */
+#line 360 "proiect.y"
+                          { std::string e; (yyval.node)=ASTNode::makeUnary("NOT",(yyvsp[0].node),yylineno,e); if(e.size()) yyerror(e.c_str()); }
+#line 1739 "proiect.tab.c"
+    break;
+
+  case 61: /* bool_expr: '(' bool_expr ')'  */
+#line 361 "proiect.y"
                               { (yyval.node) = (yyvsp[-1].node); }
-#line 1626 "proiect.tab.c"
+#line 1745 "proiect.tab.c"
     break;
 
-  case 56: /* call_args: %empty  */
-#line 278 "proiect.y"
+  case 62: /* call_args: %empty  */
+#line 364 "proiect.y"
             { (yyval.nodeList) = new std::vector<ASTNode*>(); }
-#line 1632 "proiect.tab.c"
+#line 1751 "proiect.tab.c"
     break;
 
-  case 57: /* call_args: args_list  */
-#line 278 "proiect.y"
+  case 63: /* call_args: args_list  */
+#line 364 "proiect.y"
                                                               { (yyval.nodeList) = (yyvsp[0].nodeList); }
-#line 1638 "proiect.tab.c"
+#line 1757 "proiect.tab.c"
     break;
 
-  case 58: /* args_list: general_expr  */
-#line 279 "proiect.y"
+  case 64: /* args_list: general_expr  */
+#line 365 "proiect.y"
                          { (yyval.nodeList) = new std::vector<ASTNode*>(); (yyval.nodeList)->push_back((yyvsp[0].node)); }
-#line 1644 "proiect.tab.c"
+#line 1763 "proiect.tab.c"
     break;
 
-  case 59: /* args_list: args_list ',' general_expr  */
-#line 280 "proiect.y"
+  case 65: /* args_list: args_list ',' general_expr  */
+#line 366 "proiect.y"
                                        { (yyval.nodeList) = (yyvsp[-2].nodeList); (yyval.nodeList)->push_back((yyvsp[0].node)); }
-#line 1650 "proiect.tab.c"
+#line 1769 "proiect.tab.c"
     break;
 
-  case 60: /* if_statement: IF '(' bool_expr ')' '{' statement_list '}'  */
-#line 283 "proiect.y"
+  case 66: /* if_statement: IF '(' bool_expr ')' '{' statement_list '}'  */
+#line 369 "proiect.y"
              { 
                 // MODIFICARE: Construim nodul IF in loc sa stergem
                 ASTNode* block = createSequence((yyvsp[-1].nodeList));
                 delete (yyvsp[-1].nodeList); // Stergem vectorul, dar pastram nodurile in 'block'
                 (yyval.node) = new ASTNode("If", ValueType::VOID, (yyvsp[-4].node), block);
              }
-#line 1661 "proiect.tab.c"
+#line 1780 "proiect.tab.c"
     break;
 
-  case 61: /* while_statement: WHILE '(' bool_expr ')' '{' statement_list '}'  */
-#line 292 "proiect.y"
+  case 67: /* while_statement: WHILE '(' bool_expr ')' '{' statement_list '}'  */
+#line 378 "proiect.y"
                 { 
                 // MODIFICARE: Construim nodul WHILE in loc sa stergem
                 ASTNode* block = createSequence((yyvsp[-1].nodeList));
                 delete (yyvsp[-1].nodeList);
                 (yyval.node) = new ASTNode("While", ValueType::VOID, (yyvsp[-4].node), block);
                 }
-#line 1672 "proiect.tab.c"
+#line 1791 "proiect.tab.c"
     break;
 
-  case 62: /* print_call: PRINT '(' general_expr ')'  */
-#line 300 "proiect.y"
+  case 68: /* print_call: PRINT '(' general_expr ')'  */
+#line 386 "proiect.y"
                                         { (yyval.node) = ASTNode::makePrint((yyvsp[-1].node)); }
-#line 1678 "proiect.tab.c"
+#line 1797 "proiect.tab.c"
     break;
 
 
-#line 1682 "proiect.tab.c"
+#line 1801 "proiect.tab.c"
 
       default: break;
     }
@@ -1871,13 +1990,16 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 301 "proiect.y"
+#line 387 "proiect.y"
 
 
 void yyerror(const char * s){ std::cout << "Eroare la linia " << yylineno << ": " << s << std::endl; errorCount++; }
 int main(int argc, char** argv) {
     if (argc < 2) return 1;
     yyin = fopen(argv[1], "r");
-    yyparse();
+    int result = yyparse();
+    if (result != 0) {
+        currentScope->printTable();
+    }
     return (errorCount == 0 ? 0 : 1);
 }

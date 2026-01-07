@@ -19,8 +19,6 @@ public:
     string value;
     IdKind kind;
     vector<string> param_types;
-    
-    // Pointer catre scope-ul definit de acest ID (pentru Class/Function)
     SymTable* defScope = nullptr;
 
     IdInfo(){}

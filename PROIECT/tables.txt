@@ -1,3 +1,17 @@
+Scope: Function getAge
+Runtime Values Dump:
+--------------------------
+Scope: Class Person
+Name: age, Kind: 0 Val: 0
+Name: getAge, Kind: 1
+Name: name, Kind: 0 Val: 
+Runtime Values Dump:
+--------------------------
+Scope: Function add
+Name: a, Kind: 0 Val: 0
+Name: b, Kind: 0 Val: 0
+Runtime Values Dump:
+--------------------------
 Scope: global
 Name: Person, Kind: 2
 Name: add, Kind: 1
