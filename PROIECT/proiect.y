@@ -190,7 +190,6 @@ func_statement_list : { $$ = new std::vector<ASTNode*>(); }
                     | func_statement_list func_statement { $$ = $1; if($2) $$->push_back($2); } ;
 
 func_statement : statement { $$ = $1; } 
-               | RETURN general_expr ';' { $$ = $2; } 
                | var_decl { $$ = nullptr; } ;
 
 statement_list : { $$ = new std::vector<ASTNode*>(); } 
@@ -273,6 +272,10 @@ statement : ID ASSIGN general_expr ';'
           | print_call ';' { $$ = $1; }
           | if_statement { $$ = $1; }
           | while_statement { $$ = $1; }
+          | RETURN general_expr ';'
+          {
+               $$ = new ASTNode("RETURN", $2->exprType, $2, nullptr);
+          }
           ;
 
 general_expr : arith_expr { $$ = $1; } | bool_expr { $$ = $1; } ;
@@ -342,6 +345,12 @@ bool_expr : BOOL_VAL { $$ = ASTNode::literal(Value::fromBool(std::string($1)=="t
           | arith_expr NEQ arith_expr { std::string e; $$=ASTNode::makeCompare("!=",$1,$3,yylineno,e); if(e.size()) yyerror(e.c_str()); }
           | bool_expr AND bool_expr { std::string e; $$=ASTNode::makeBinary("AND",$1,$3,yylineno,e); if(e.size()) yyerror(e.c_str()); }
           | bool_expr OR bool_expr { std::string e; $$=ASTNode::makeBinary("OR",$1,$3,yylineno,e); if(e.size()) yyerror(e.c_str()); }
+          | bool_expr EQ bool_expr { std::string e; $$=ASTNode::makeCompare("==",$1,$3,yylineno,e); if(e.size()) yyerror(e.c_str()); }
+          | bool_expr NEQ bool_expr { std::string e; $$=ASTNode::makeCompare("!=",$1,$3,yylineno,e); if(e.size()) yyerror(e.c_str()); }
+          | arith_expr EQ bool_expr { std::string e; $$=ASTNode::makeCompare("==",$1,$3,yylineno,e); if(e.size()) yyerror(e.c_str()); }
+          | arith_expr NEQ bool_expr { std::string e; $$=ASTNode::makeCompare("!=",$1,$3,yylineno,e); if(e.size()) yyerror(e.c_str()); }
+          | bool_expr EQ arith_expr { std::string e; $$=ASTNode::makeCompare("==",$1,$3,yylineno,e); if(e.size()) yyerror(e.c_str()); }
+          | bool_expr NEQ arith_expr { std::string e; $$=ASTNode::makeCompare("!=",$1,$3,yylineno,e); if(e.size()) yyerror(e.c_str()); }
           | NOT bool_expr { std::string e; $$=ASTNode::makeUnary("NOT",$2,yylineno,e); if(e.size()) yyerror(e.c_str()); }
           | '(' bool_expr ')' { $$ = $2; }
           ;
@@ -355,7 +364,7 @@ if_statement : IF '(' bool_expr ')' '{' statement_list '}'
                 ASTNode* block = createSequence($6);
                 delete $6;
                 $$ = new ASTNode("If", ValueType::VOID, $3, block);
-             } 
+             }
              ;
 
 while_statement : WHILE '(' bool_expr ')' '{' statement_list '}'
