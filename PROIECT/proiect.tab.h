@@ -86,7 +86,8 @@ extern int yydebug;
     LT = 280,                      /* LT  */
     GT = 281,                      /* GT  */
     LE = 282,                      /* LE  */
-    GE = 283                       /* GE  */
+    GE = 283,                      /* GE  */
+    UMINUS = 284                   /* UMINUS  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -95,7 +96,7 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 43 "proiect.y"
+#line 36 "proiect.y"
 
      char* strVal;
      int intVal;
@@ -103,7 +104,7 @@ union YYSTYPE
      ASTNode* node;
      std::vector<ASTNode*>* nodeList;
 
-#line 107 "proiect.tab.h"
+#line 108 "proiect.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

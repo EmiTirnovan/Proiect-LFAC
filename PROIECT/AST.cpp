@@ -89,25 +89,57 @@ ASTNode* ASTNode::makePrint(ASTNode* expr) {
     return new ASTNode("Print", expr ? expr->exprType : ValueType::UNKNOWN, expr, nullptr);
 }
 
-static Value applyBinary(const std::string& op, const Value& a, const Value& b) {
+static Value applyBinary(const std::string& op, const Value& a, const Value& b, std::string& err) {
+    // tipuri incompatibile
+    if (a.type != b.type) {
+        err = ": Tipuri incompatibile pentru operatorul '" + op + "': " +
+              typeToString(a.type) + " vs " + typeToString(b.type);
+        return Value();
+    }
+
     if (op == "+") {
-        if (a.type == ValueType::INT) return Value::fromInt(std::get<int>(a.data) + std::get<int>(b.data));
+        if (a.type == ValueType::INT)   return Value::fromInt(std::get<int>(a.data) + std::get<int>(b.data));
         if (a.type == ValueType::FLOAT) return Value::fromFloat(std::get<double>(a.data) + std::get<double>(b.data));
         if (a.type == ValueType::STRING) return Value::fromString(std::get<std::string>(a.data) + std::get<std::string>(b.data));
     }
+
     if (op == "-") {
-        if (a.type == ValueType::INT) return Value::fromInt(std::get<int>(a.data) - std::get<int>(b.data));
+        if (a.type == ValueType::INT)   return Value::fromInt(std::get<int>(a.data) - std::get<int>(b.data));
+        if (a.type == ValueType::FLOAT) return Value::fromFloat(std::get<double>(a.data) - std::get<double>(b.data));
     }
+
     if (op == "*") {
-        if (a.type == ValueType::INT) return Value::fromInt(std::get<int>(a.data) * std::get<int>(b.data));
+        if (a.type == ValueType::INT)   return Value::fromInt(std::get<int>(a.data) * std::get<int>(b.data));
+        if (a.type == ValueType::FLOAT) return Value::fromFloat(std::get<double>(a.data) * std::get<double>(b.data));
     }
+
     if (op == "/") {
-        if (a.type == ValueType::INT && std::get<int>(b.data) != 0) return Value::fromInt(std::get<int>(a.data) / std::get<int>(b.data));
+        if (a.type == ValueType::INT) {
+            int denom = std::get<int>(b.data);
+            if (denom == 0) { err = ": Impartire la 0"; return Value(); }
+            return Value::fromInt(std::get<int>(a.data) / denom);
+        }
+        if (a.type == ValueType::FLOAT) {
+            double denom = std::get<double>(b.data);
+            if (denom == 0.0) { err = ": Impartire la 0.0"; return Value(); }
+            return Value::fromFloat(std::get<double>(a.data) / denom);
+        }
     }
-    if (op == "&&") return Value::fromBool(std::get<bool>(a.data) && std::get<bool>(b.data));
-    if (op == "||") return Value::fromBool(std::get<bool>(a.data) || std::get<bool>(b.data));
+
+    if (op == "&&") {
+        if (a.type != ValueType::BOOL) { err = ": '&&' doar pe BOOL"; return Value(); }
+        return Value::fromBool(std::get<bool>(a.data) && std::get<bool>(b.data));
+    }
+
+    if (op == "||") {
+        if (a.type != ValueType::BOOL) { err = ": '||' doar pe BOOL"; return Value(); }
+        return Value::fromBool(std::get<bool>(a.data) || std::get<bool>(b.data));
+    }
+
+    err = ": Operator binar neimplementat '" + op + "'";
     return Value();
 }
+
 
 static Value applyCompare(const std::string& op, const Value& a, const Value& b) {
     if (a.type == ValueType::INT) {
@@ -198,12 +230,27 @@ Value ASTNode::eval(SymTable* scope, std::ostream& out, std::string& err, int li
         return Value();
     }
     Value a = left ? left->eval(scope, out, err, line) : Value();
-    if(!err.empty()) return Value();
-    Value b = right ? right->eval(scope, out, err, line) : Value();
-    if(!err.empty()) return Value();
-    
-    if (label == "+" || label == "-" || label == "*" || label == "/" || label == "&&" || label == "||")
-        return applyBinary(label, a, b);
-    
-    return applyCompare(label, a, b);
+if(!err.empty()) return Value();
+if (!right) {
+    if (label == "-") {
+        if (a.type == ValueType::INT)   return Value::fromInt(-std::get<int>(a.data));
+        if (a.type == ValueType::FLOAT) return Value::fromFloat(-std::get<double>(a.data));
+        err = ": Minus unar pe tip invalid (" + typeToString(a.type) + ")";
+        return Value();
+    }
+    if (label == "!") {
+        if (a.type == ValueType::BOOL) return Value::fromBool(!std::get<bool>(a.data));
+        err = ": Operatorul '!' pe tip invalid (" + typeToString(a.type) + ")";
+        return Value();
+    }
+    return Value();
+}
+Value b = right->eval(scope, out, err, line);
+if(!err.empty()) return Value();
+
+if (label == "+" || label == "-" || label == "*" || label == "/" || label == "&&" || label == "||")
+    return applyBinary(label, a, b, err);
+
+return applyCompare(label, a, b);
+
 }

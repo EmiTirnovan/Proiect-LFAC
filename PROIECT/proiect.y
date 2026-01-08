@@ -57,6 +57,7 @@ ASTNode* createSequence(std::vector<ASTNode*>* stmts) {
 %left PLUS MINUS
 %left MUL DIV
 %right NOT
+%right UMINUS
 
 %start progr
 
@@ -333,6 +334,13 @@ arith_expr : INT_VAL { $$ = ASTNode::literal(Value::fromInt($1)); }
            | arith_expr MINUS arith_expr { std::string e; $$=ASTNode::makeBinary("-",$1,$3,yylineno,e); if(e.size()) yyerror(e.c_str()); }
            | arith_expr MUL arith_expr { std::string e; $$=ASTNode::makeBinary("*",$1,$3,yylineno,e); if(e.size()) yyerror(e.c_str()); }
            | arith_expr DIV arith_expr { std::string e; $$=ASTNode::makeBinary("/",$1,$3,yylineno,e); if(e.size()) yyerror(e.c_str()); }
+           | MINUS arith_expr %prec UMINUS
+               {
+                    std::string e;
+                    $$ = ASTNode::makeUnary("-", $2, yylineno, e);
+                    if (e.size()) yyerror(e.c_str());
+               }
+
            | '(' arith_expr ')' { $$ = $2; }
            ;
 
